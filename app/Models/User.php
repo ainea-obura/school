@@ -47,4 +47,29 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function students()
+    {
+        return $this->hasMany(Student::class);
+    }
+
+    public function streams()
+    {
+        return $this->hasMany(Stream::class);
+    }
+
+    public function subjects()
+    {
+        return $this->hasMany(Subject::class);
+    }
+
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
+
+    public function assign()
+    {
+        return $this->hasMany(Assign::class);
+    }
 }
