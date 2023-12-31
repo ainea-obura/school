@@ -47,5 +47,9 @@ Route::middleware('auth:api')->group(function () {
     Route::post('assign/create', [AssignController::class, 'store']);
     Route::get('assign/all', [AssignController::class, 'index']);
     Route::get('assign/{id}', [AssignController::class, 'show']);
+
+    Route::delete('/assignments/clear/{assign}', [AssignController::class, 'destroy']);
+
+    Route::post('change-password', [AuthController::class, 'changePassword']);
 });
 // Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
