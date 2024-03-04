@@ -38,7 +38,8 @@ class AssignController extends Controller
         // Validate incoming request data
         $validator = Validator::make($request->all(), [
             'book_name' => 'required|string|max:255',
-            'book_no' => 'required|string|max:255|unique:assigns',
+            // 'book_no' => 'required|string|max:255|unique:assigns',
+            'book_no' => 'required|string|max:255',
             'student_id' => 'required|exists:students,id',
             'subject_id' => 'nullable',
          ]);
