@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Traits\Utilities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -64,7 +65,7 @@ class AuthController extends Controller
         }
 
         // If login fails, return an error response
-        return response()->json(['error' => 'Invalid Email or Password'], 401);
+        return response()->json(['error' => 'Invalid Email or Password'], 400);
     }
 
     public function logout(Request $request)
@@ -77,5 +78,34 @@ class AuthController extends Controller
 
         // Return a success response upon logout
         return response()->json(['message' => 'Successfully logged out'], 200);
+    }
+
+    public function changePassword(Request $request)
+    {
+        // Validate incoming request data
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8',
+        ]);
+
+        // If validation fails, return an error response
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        // Get the authenticated user
+        $user = Auth::user();
+
+        // Check if the current password matches the user's password
+        if (!Hash::check($request->input('current_password'), $user->password)) {
+            return response()->json(['error' => 'Current password is incorrect'], 400);
+        }
+
+        // Update the user's password with the new password
+        $user->password = bcrypt($request->input('new_password'));
+        $user->save();
+
+        // Return a success response upon password change
+        return response()->json(['message' => 'Password changed successfully'], 200);
     }
 }

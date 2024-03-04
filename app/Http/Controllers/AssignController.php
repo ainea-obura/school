@@ -38,7 +38,8 @@ class AssignController extends Controller
         // Validate incoming request data
         $validator = Validator::make($request->all(), [
             'book_name' => 'required|string|max:255',
-            'book_no' => 'required|string|max:255|unique:assigns',
+            // 'book_no' => 'required|string|max:255|unique:assigns',
+            'book_no' => 'required|string|max:255',
             'student_id' => 'required|exists:students,id',
             'subject_id' => 'nullable',
          ]);
@@ -115,7 +116,41 @@ class AssignController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    /**
+     * Remove the specified resource from storage.
+     */
+    //     public function destroy(Assign $assign)
+    // {
+    //     // Ensure the authenticated user has permission to delete this assignment
+    //     if (auth()->user()->id !== $assign->user_id) {
+    //         return response()->json(['error' => 'Unauthorized'], 403);
+    //     }
+
+    //     // Store a record of cleared book in the log table
+    //     $clearedBookLog = ClearedBooksLog::create([
+    //         'assignment_id' => $assign->id,
+    //         'book_name' => $assign->book_name,
+    //         'book_no' => $assign->book_no,
+    //         'user_id' => auth()->user()->id,
+
+    //     ]);
+
+    //     // Delete the assignment
+    //     $assign->delete();
+
+    //     return response()->json(['message' => 'Assignment deleted successfully', 'log' => $clearedBookLog], 200);
+    // }
+
     public function destroy(Assign $assign)
     {
+        // Ensure the authenticated user has permission to delete this assignment
+        if (auth()->user()->id !== $assign->user_id) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        // Delete the assignment
+        $assign->delete();
+
+        return response()->json(['message' => 'cleared successfully'], 200);
     }
 }

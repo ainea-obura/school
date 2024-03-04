@@ -34,7 +34,7 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:subjects',
          ]);
 
         // If validation fails, return an error response
