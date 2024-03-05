@@ -12,7 +12,6 @@ return new class() extends Migration {
     {
         Schema::create('cleared_books_logs', function (Blueprint $table) {
             $table->id();
-            $table->id();
             $table->unsignedBigInteger('assignment_id');
             $table->string('book_name');
             $table->string('book_no');
